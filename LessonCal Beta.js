@@ -102,7 +102,26 @@ if ( document.location.origin + document.location.pathname.toLowerCase() !== 'ht
 		"			$next.click();" +
 		"		}" +
 		"	});" +
-		"});";
+		"});" +
+		"" +
+		"function classNotes( c, cal ) {" +
+		"	var url = 'showclassspecificnotes.cfm?c=' + c + '&calid=' + cal," +
+		"		xhr = new XMLHttpRequest();" +
+		"	xhr.open( 'GET', url );" +
+		"	xhr.onload = function () {" +
+		"		try {" +
+		"			noteWin.close();" +
+		"		} catch ( e ) {" +
+		"			console.log( e );" +
+		"		}" +
+		"		noteWin = window.open( '', 'CLASS NOTES', 'status = 0, toolbar = 0, location = 0, menubar = 0, directories = 0, resizable = 1, scrollbars = 1' );" +
+		"		noteWin.document.write( xhr.responseText );" +
+		"		noteWin.document.body.removeAttribute( 'style' );" +
+		"		noteWin.document.head.innerHTML += \"<style>a { text-decoration: none; } body { background-image:url( 'http://jaredflores.com/background.jpg' );font-family: 'Avant Garde', Avantgarde, 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; }</style>\";" +
+		"		$( noteWin.document ).find( '#classinfo' )[0].setAttribute( 'style', 'background:white;opacity:0.9;' );" +
+		"	};" +
+		"	xhr.send();" +
+		"}";
 
 		$( document ).ready( function() {
 			/* Assigns ID to elements */
@@ -149,6 +168,12 @@ if ( document.location.origin + document.location.pathname.toLowerCase() !== 'ht
 				/* Unveiling Hidden Day Feature 
 				Modifying Old Days Tags */
 				$body[ 0 ].innerHTML = $body[ 0 ].innerHTML.replace( "<!-- <tr><td align='center'><strong>SUN</strong></td>", "" ).replace( "<td align='center'><strong>SAT</strong></td></tr> -->", "" ).replace( 'Mon.&nbsp;', '' ).replace( 'Tue.&nbsp;', '' ).replace( 'Wed.&nbsp;', '' ).replace( 'Thu.&nbsp;', '' ).replace( 'Fri.&nbsp;', '' );
+
+				/* Replace Old Class Notes Script */
+				$( 'script[ language="javascript"]' ).remove();
+				$( 'a[ tabindex="_showclass" ]' ).each( function() {
+					this.href = this.href.replace( 'showclassspecificnotes', 'classNotes' );
+				});
 
 				/* Add AJAX Script to the head */
 				headScript.innerHTML = ajaxScript;
