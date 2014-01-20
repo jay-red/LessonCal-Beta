@@ -50,6 +50,12 @@ if ( document.location.origin + document.location.pathname.toLowerCase() !== 'ht
 
 		/* Defines AJAX Script */
 		ajaxScript = "$( document ).ready( function() {" +
+		"	function replaceNotes() {" +
+		"		$( 'a[ tabindex=\"_showclass\" ]' ).each( function() {" +
+		"			this.href = this.href.replace( 'showclassspecificnotes', 'classNotes' );" +
+		"		});" +
+		"	}" +
+		"" +
 		"	function assignID() {" +
 		"		$( document ).find( 'a:contains(\"Previous\")' )[ 0 ].setAttribute( 'id', 'prev' );" +
 		"		$( document ).find( 'a:contains(\"Next\")' )[ 0 ].setAttribute( 'id', 'next' );" +
@@ -88,6 +94,7 @@ if ( document.location.origin + document.location.pathname.toLowerCase() !== 'ht
 		"			newHtml = xhr.responseText;" +
 		"			$calendar[0].innerHTML = $( newHtml ).find( 'table[ align=\"center\" ][ border=\"1\" ][ cellpadding=\"0\" ][ cellspacing=\"0\" ]' )[ 0 ].innerHTML;" +
 		"			assignID();" +
+		"			replaceNotes();" +
 		"			$calendar.fadeIn( 1000 );" +
 		"" +
 		"		};" +
